@@ -1,16 +1,24 @@
 import "./globals.css";
 import { CartProvider } from "./cart/CartContext";
+import { ToastProvider } from "./components/ToastProvider";
 import Header from "./components/Header";
+import { Playfair_Display, Manrope } from "next/font/google";
+
+const display = Playfair_Display({ subsets: ["latin"], variable: "--font-display" });
+const sans = Manrope({ subsets: ["latin"], variable: "--font-sans" });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${display.variable} ${sans.variable}`}>
       <body>
         <CartProvider>
-          <Header />
-          <div className="page">{children}</div>
+          <ToastProvider>
+            <Header />
+            <div className="page">{children}</div>
+          </ToastProvider>
         </CartProvider>
       </body>
     </html>
   );
 }
+

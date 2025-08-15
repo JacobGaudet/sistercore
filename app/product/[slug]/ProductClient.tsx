@@ -3,9 +3,11 @@
 import { useMemo, useState } from "react";
 import { useCart } from "@/app/cart/CartContext";
 import type { Product } from "@/lib/products";
+import { useToast } from "@/app/components/ToastProvider";
 
 export default function ProductClient({ product }: { product: Product }) {
   const { add } = useCart();
+  const { show } = useToast();
 
   const [variantId, setVariantId] = useState(product.variants?.[0]?.id);
   const [qty, setQty] = useState(1);
@@ -17,6 +19,8 @@ export default function ProductClient({ product }: { product: Product }) {
 
   const unitAmount = selected?.price ?? product.basePrice ?? 0;
 
+  const hasNotes = selected?.notes && selected.notes.length > 0;
+
   return (
     <main className="container">
       <div className="card stack">
@@ -25,16 +29,49 @@ export default function ProductClient({ product }: { product: Product }) {
           {product.description && <p className="lead">{product.description}</p>}
         </div>
 
-        {product.variants && (
+        {/* If variants have notes, show chips; otherwise keep the select */}
+        {product.variants?.some(v => v.notes?.length) ? (
           <div className="field">
-            <label className="label">Variant</label>
-            <select value={variantId} onChange={(e) => setVariantId(e.target.value)}>
+            <label className="label">Choose a style</label>
+            <div className="chips" role="radiogroup" aria-label="Mystery style">
               {product.variants.map((v) => (
-                <option key={v.id} value={v.id}>
+                <label key={v.id} className={`chip ${variantId === v.id ? "active" : ""}`}>
+                  <input
+                    type="radio"
+                    name="style"
+                    value={v.id}
+                    checked={variantId === v.id}
+                    onChange={() => setVariantId(v.id)}
+                    aria-checked={variantId === v.id}
+                    aria-label={v.name}
+                  />
                   {v.name}
-                </option>
+                </label>
               ))}
-            </select>
+            </div>
+          </div>
+        ) : (
+          product.variants && (
+            <div className="field">
+              <label className="label">Variant</label>
+              <select value={variantId} onChange={(e) => setVariantId(e.target.value)}>
+                {product.variants.map((v) => (
+                  <option key={v.id} value={v.id}>
+                    {v.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )
+        )}
+
+        {/* Live-updating clues */}
+        {hasNotes && (
+          <div className="card stack" style={{ background: "linear-gradient(135deg, rgba(232,90,165,.06), rgba(179,136,235,.06)), #fff" }}>
+            <h3>Clues (no spoilers)</h3>
+            <ul className="hints">
+              {selected!.notes!.map((n, i) => <li key={i}>• {n}</li>)}
+            </ul>
           </div>
         )}
 
@@ -57,7 +94,7 @@ export default function ProductClient({ product }: { product: Product }) {
         <div>
           <button
             className="btn btn-primary"
-            onClick={() =>
+            onClick={() => {
               add({
                 productId: product.id,
                 variantId,
@@ -65,8 +102,9 @@ export default function ProductClient({ product }: { product: Product }) {
                 variantLabel: selected?.name,
                 unitAmount,
                 quantity: qty,
-              })
-            }
+              });
+              show(`Added ${qty} ${selected?.name ? `${selected.name} ` : ""}${product.name} to cart`);
+            }}
           >
             Add to cart
           </button>

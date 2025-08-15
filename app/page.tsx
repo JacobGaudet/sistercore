@@ -1,31 +1,18 @@
 import Link from "next/link";
-import { PRODUCTS } from "@/lib/products";
 
 export default function Home() {
   return (
     <main className="container stack">
-      <h1>Freshly Baked. Always Organic.</h1>
-      <p className="lead">Order pickup or local delivery.</p>
-
-      <div className="grid grid-2">
-        {PRODUCTS.filter(p => p.active).map(p => (
-          <div key={p.id} className="card stack">
-            <div>
-              <h2>{p.name}</h2>
-              {p.description && <p className="lead">{p.description}</p>}
-            </div>
-            <div>
-              <Link href={`/product/${p.slug}`} className="btn btn-primary">
-                Customize & Order
-              </Link>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div>
-        <Link href="/cart" className="btn">View Cart</Link>
-      </div>
+      <section
+        className="card"
+        style={{ background: `linear-gradient(135deg, rgba(232,90,165,.12), rgba(179,136,235,.10)), #fff` }}
+      >
+        <h1>Sister-Made Books and Bakes</h1>
+        <p className="lead">Sweet treats, cozy vibes. Pickup or local delivery in atx.</p>
+        <div style={{ marginTop: 12 }}>
+          <Link href="/menu" className="btn btn-primary">Start an Order</Link>
+        </div>
+      </section>
     </main>
   );
 }

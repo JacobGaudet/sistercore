@@ -5,5 +5,5 @@ export function isZipDeliverable(zip?: string) {
 }
 
 export function deliveryFeeCents(zip?: string) {
-  return isZipDeliverable(zip) ? 500 : 0; // $5 example
+  return isZipDeliverable(zip) ? 500 : 0;
 }
