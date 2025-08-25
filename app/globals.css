@@ -189,3 +189,24 @@ fieldset { border: 1px dashed var(--border); border-radius: 14px; padding: var(-
   font-size: 14px; color: var(--muted);
 }
 
+/* Home page extras */
+.hero {
+  background: linear-gradient(135deg, rgba(232,90,165,.12), rgba(179,136,235,.10)), #fff;
+  padding: var(--space-5);
+}
+.kicker {
+  display:inline-block; font-size: 13px; color: var(--muted);
+  background: #fff; border: 1px solid var(--border); border-radius: 999px;
+  padding: 4px 10px; margin-bottom: 6px;
+}
+.features {
+  display: grid; gap: var(--space-4);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 900px) { .features { grid-template-columns: repeat(3, 1fr); } }
+.feature { display: grid; gap: 8px; }
+.feature-icon { font-size: 22px; }
+.promo {
+  background: linear-gradient(135deg, rgba(255,209,102,.14), rgba(179,136,235,.10)), #fff;
+}
+

@@ -17,9 +17,7 @@ export default function Footer() {
       <div className="container footer-grid">
         <div className="footer-brand">
           <div className="brand brand-gradient">Sister&nbsp;Core&nbsp;ATX</div>
-          <p className="lead" style={{ marginTop: 6 }}>
-            Pastel treats & wrapped mystery books — pickup & local delivery.
-          </p>
+        
         </div>
 
         <nav className="footer-nav">
