@@ -15,7 +15,7 @@ export default function Home() {
   };
 
   return (
-    <main className="container stack">
+    <main className="container stack toptight">
       {/* BRAND LOGO ONLY (mobile-first) */}
       <section className="brand-hero">
         <Image

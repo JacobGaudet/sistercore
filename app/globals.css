@@ -428,6 +428,10 @@ select option {
   padding-top: var(--space-3);
 }
 .brand-logo {
-  width: 180px; height: auto; border-radius: 16px; box-shadow: var(--shadow);
+  width: 240px; height: auto; border-radius: 16px; box-shadow: var(--shadow);
 }
 @media (min-width: 720px) { .brand-logo { width: 220px; } }
+
+/* Reduce only the top padding when you add .toptight */
+.container.toptight { padding-top: var(--space-2) !important; }
+.brand-hero { padding-top: 4px; } /* keep brand area tight */
