@@ -46,10 +46,9 @@ body {
 
 /* Header */
 .site-header {
-  position: sticky; top: 0; z-index: 50;
-  backdrop-filter: blur(8px);
-  background: rgba(255,255,255,.85);
-  border-bottom: 1px solid var(--border);
+  background: var(--accent);          /* pink */
+  border-bottom: 1px solid var(--accent-strong);
+  backdrop-filter: none;
 }
 .nav { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-3) var(--space-4); }
 .brand-link { color: inherit; }
@@ -152,9 +151,8 @@ fieldset { border: 1px dashed var(--border); border-radius: 12px; padding: var(-
 
 /* --- Footer --- */
 .site-footer {
-  background: #fff;
-  border-top: 1px solid var(--border);
-  margin-top: var(--space-6);
+  background: var(--accent);          /* pink */
+  border-top: 1px solid var(--accent-strong);
 }
 .footer-grid {
   display: grid;
@@ -346,3 +344,51 @@ html, body { max-width: 100%; overflow-x: hidden; }
   .sticky-aside { position: sticky; top: 90px; height: fit-content; }
 }
 
+/* Make the Cart button stand out on the pink header */
+.site-header .btn-primary {
+  background: #fff;
+  color: var(--text);
+  border-color: var(--border);
+}
+.site-header .btn-primary:hover {
+  background: #f8f8f8;
+}
+
+/* Always use black text inside inputs/selects (including date fields) */
+button, input, select, textarea { color: var(--text); }
+
+/* Our inputs already set color, but enforce it again explicitly */
+.input, select, textarea {
+  color: var(--text);
+  background: #fff;
+}
+
+/* Date input text specifically (WebKit/Chromium) */
+input[type="date"] { color: var(--text); caret-color: var(--text); }
+input[type="date"]::-webkit-datetime-edit { color: var(--text); }
+input[type="date"]::-webkit-datetime-edit-text { color: var(--text); }
+input[type="date"]::-webkit-datetime-edit-month-field,
+input[type="date"]::-webkit-datetime-edit-day-field,
+input[type="date"]::-webkit-datetime-edit-year-field { color: var(--text); }
+input[type="date"]::-webkit-calendar-picker-indicator { opacity: .8; }
+
+/* Select + options stay black regardless of accent */
+select, option { color: var(--text) !important; background: #fff; }
+
+/* Placeholder legibility */
+::placeholder { color: var(--muted); opacity: 1; }
+
+/* Chip/variant labels always black text */
+.chip { color: var(--text); background: #fff; }
+.chip.active {
+  color: var(--text);
+  border-color: var(--accent-strong);
+  box-shadow: 0 0 0 4px var(--ring);
+}
+
+.card,
+.hero,
+.promo {
+  background: #fff;
+  border: 1px solid var(--border);
+}
