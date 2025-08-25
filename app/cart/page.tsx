@@ -35,6 +35,7 @@ export default function CartPage() {
       clear();
       window.location.href = checkoutUrl;
     } catch (err) {
+      console.error(err);
       alert("Checkout failed. Please check your email, name, and pickup date.");
     } finally {
       setLoading(false);
