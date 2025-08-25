@@ -20,15 +20,7 @@ export default function CartPage() {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        // ⬇️ pickup-only payload
-        body: JSON.stringify({
-          email,
-          customerName,
-          items,
-          pickupDate,
-          note,
-          tipAmount,
-        }),
+        body: JSON.stringify({ email, customerName, items, pickupDate, note, tipAmount }),
       });
       if (!res.ok) throw new Error(await res.text());
       const { checkoutUrl } = await res.json();
@@ -43,10 +35,7 @@ export default function CartPage() {
   };
 
   return (
-    <main
-      className="container grid"
-      style={{ gridTemplateColumns: "1.2fr .8fr", gap: "var(--space-5)" }}
-    >
+    <main className="container cart-layout">
       {/* Left: Items & pickup details */}
       <section className="stack">
         <div className="card stack">
@@ -57,7 +46,7 @@ export default function CartPage() {
             <div className="stack">
               {items.map((it, i) => (
                 <div key={i} className="row">
-                  <div>
+                  <div style={{ minWidth: 0 }}>
                     <strong>{it.name}</strong>
                     {it.variantLabel ? ` – ${it.variantLabel}` : ""} × {it.quantity}
                   </div>
@@ -93,10 +82,7 @@ export default function CartPage() {
             />
           </div>
 
-          <div
-            className="grid"
-            style={{ gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)" }}
-          >
+          <div className="grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)" }}>
             <div className="field">
               <label className="label">Email</label>
               <input
@@ -136,17 +122,14 @@ export default function CartPage() {
               type="number"
               min={0}
               value={tipAmount}
-              onChange={(e) => setTipAmount(+e.target.value)}
+              onChange={(e) => setTipAmount(Math.max(0, +e.target.value || 0))}
             />
           </div>
         </div>
       </section>
 
       {/* Right: Summary / pay */}
-      <aside
-        className="card stack"
-        style={{ position: "sticky", top: "90px", height: "fit-content" }}
-      >
+      <aside className="card stack sticky-aside">
         <h2>Summary</h2>
         <div className="row">
           <span>Subtotal</span>
