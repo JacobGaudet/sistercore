@@ -33,7 +33,7 @@ export default function Home() {
       {/* FEATURED ITEMS */}
       <section className="stack">
         <h2>Popular This Week</h2>
-        <div className="grid grid-2">
+        <div className="scroll-x">
           {featured.map(p => (
             <div key={p.id} className="card stack">
               <div>
@@ -41,14 +41,13 @@ export default function Home() {
                 {p.description && <p className="lead">{p.description}</p>}
               </div>
               <div className="inline" style={{ justifyContent: "space-between" }}>
-                <span className="lead">{priceRange(p) ? <>From <strong>{priceRange(p)}</strong></> : null}</span>
+                <span className="lead">
+                  {priceRange(p) ? <>From <strong>{priceRange(p)}</strong></> : null}
+                </span>
                 <Link href={`/product/${p.slug}`} className="btn btn-primary">Customize & Add</Link>
               </div>
             </div>
           ))}
-        </div>
-        <div>
-          <Link href="/menu" className="btn">See Full Menu</Link>
         </div>
       </section>
 
