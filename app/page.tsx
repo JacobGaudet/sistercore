@@ -1,5 +1,5 @@
-// app/page.tsx
 import Link from "next/link";
+import Image from "next/image";
 import { PRODUCTS } from "@/lib/products";
 
 export default function Home() {
@@ -16,6 +16,18 @@ export default function Home() {
 
   return (
     <main className="container stack">
+      {/* BRAND LOGO ONLY (mobile-first) */}
+      <section className="brand-hero">
+        <Image
+          src="/logo.jpeg"
+          alt="Sister Core ATX"
+          width={220}
+          height={220}
+          className="brand-logo"
+          priority
+        />
+      </section>
+
       {/* HERO */}
       <section className="hero card stack">
         <div className="kicker">Austin, TX • Pickup Only</div>
