@@ -29,22 +29,13 @@ export async function POST(req: NextRequest) {
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
-    const { customerName, pickupDate, fulfillmentType, deliveryZip, note } =
-      session.metadata ?? {};
+    const { customerName, pickupDate, note } = session.metadata ?? {};
 
-    const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
-      limit: 100,
-    });
-
-    const total = lineItems.data.reduce(
-      (sum, li) => sum + (li.amount_total ?? 0),
-      0
-    );
-    const tipItem = lineItems.data.find(
-      (li) => (li.description ?? "").toLowerCase().trim() === "tip"
-    );
+    const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 100 });
+    const total = lineItems.data.reduce((sum, li) => sum + (li.amount_total ?? 0), 0);
+    const tipItem = lineItems.data.find(li => (li.description ?? "").toLowerCase().trim() === "tip");
     const tipAmount = tipItem?.amount_total ?? 0;
-    const subtotal = total - tipAmount; // simple calc; delivery fee is included in subtotal here
+    const subtotal = total - tipAmount;
 
     const created = await prisma.order.create({
       data: {
@@ -54,17 +45,17 @@ export async function POST(req: NextRequest) {
         totalAmount: total,
         stripeSessionId: session.id,
         pickupDate: new Date(pickupDate!),
-        fulfillmentType: (fulfillmentType as "pickup" | "delivery") || "pickup",
-        deliveryZip: deliveryZip || null,
+        fulfillmentType: "pickup",   // <— force pickup
+        deliveryZip: null,           // <— ensure null
         note: note || null,
         tipAmount: tipAmount,
         items: {
           create: lineItems.data
-            .filter((li) => {
+            .filter(li => {
               const d = (li.description || "").toLowerCase().trim();
-              return d !== "tip" && d !== "local delivery";
+              return d !== "tip"; // no delivery fee to filter anymore
             })
-            .map((li) => ({
+            .map(li => ({
               productId: "catalog",
               variantId: null,
               quantity: li.quantity ?? 1,
@@ -78,10 +69,10 @@ export async function POST(req: NextRequest) {
       customerEmail: created.email,
       customerName: created.customerName,
       pickupDateISO: new Date(created.pickupDate).toISOString().slice(0, 10),
-      fulfillmentType: created.fulfillmentType as "pickup" | "delivery",
-      deliveryZip: created.deliveryZip,
+      fulfillmentType: "pickup",   // <— always pickup
+      deliveryZip: null,
       note: created.note,
-      lineItems: lineItems.data.map((li) => ({
+      lineItems: lineItems.data.map(li => ({
         description: li.description,
         quantity: li.quantity,
         amount_total: li.amount_total,

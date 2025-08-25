@@ -18,11 +18,10 @@ export default function Home() {
     <main className="container stack">
       {/* HERO */}
       <section className="hero card stack">
-        <div className="kicker">Austin, TX • Pickup & Local Delivery</div>
+        <div className="kicker">Austin, TX • Pickup Only</div>
         <h1>Freshly Baked, Sister-Made</h1>
         <p className="lead">
-          Pastel treats & wrapped Mystery Books with spoiler-free clues. Order online,
-          schedule pickup or local delivery.
+          Always organic and scratch made! Order online and schedule a pickup time.
         </p>
         <div className="inline">
           <Link href="/menu" className="btn btn-primary">Start an Order</Link>
@@ -60,12 +59,12 @@ export default function Home() {
           <div className="feature card">
             <div className="feature-icon">🧁</div>
             <h3>Pick your treats</h3>
-            <p className="lead">Choose cupcakes, cookies, or our wrapped Mystery Book gift.</p>
+            <p className="lead">Choose from our selection of homemade bakes, or pick one out a wrapped Mystery Book.</p>
           </div>
           <div className="feature card">
             <div className="feature-icon">📅</div>
             <h3>Choose a date</h3>
-            <p className="lead">Select pickup or local delivery at checkout. Lead times show per item.</p>
+            <p className="lead">Select a pickup date at checkout. Lead times show per item.</p>
           </div>
           <div className="feature card">
             <div className="feature-icon">🔒</div>
@@ -88,21 +87,23 @@ export default function Home() {
 
       {/* PICKUP & DELIVERY INFO */}
       <section className="grid grid-2">
-        <div className="card stack">
-          <h2>Pickup / Delivery</h2>
-          <p className="lead">
-            We currently offer pickup and select ZIP delivery in Austin. Exact options and any delivery fees are shown at checkout.
-          </p>
-          <p className="lead">Questions? <a href="mailto:orders@sistercoreatx.com">orders@sistercoreatx.com</a></p>
-        </div>
-        <div className="card stack">
-          <h2>Allergens & Notes</h2>
-          <p className="lead">
-            Our kitchen handles wheat, dairy, eggs, and nuts. Leave allergy notes or writing for cakes in the order notes at checkout.
-          </p>
-          <Link href="/info" className="btn">Read policies</Link>
-        </div>
-      </section>
+      <div className="card stack">
+        <h2>Pickup Info</h2>
+        <p className="lead">
+          We currently offer <strong>pickup only</strong> in Austin. You’ll choose
+          an available pickup date during checkout and get an email confirmation.
+        </p>
+        <p className="lead">Questions? <a href="mailto:orders@sistercoreatx.com">orders@sistercoreatx.com</a></p>
+      </div>
+      <div className="card stack">
+        <h2>Allergens & Notes</h2>
+        <p className="lead">
+          Our kitchen handles wheat, dairy, eggs, and nuts. Leave allergy notes or
+          writing for cakes in the order notes at checkout.
+        </p>
+        <a href="/info" className="btn">Read policies</a>
+      </div>
+    </section>
     </main>
   );
 }

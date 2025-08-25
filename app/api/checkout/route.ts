@@ -1,70 +1,81 @@
-import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
+import { NextRequest, NextResponse } from "next/server";
 import { PRODUCTS } from "@/lib/products";
-import { isZipDeliverable, deliveryFeeCents } from "@/lib/delivery";
+import { prisma } from "@/lib/prisma";
+import { CAPACITY_PER_DAY, MAX_DAYS_AHEAD, startOfDay, endOfDay } from "@/lib/order-policy";
+
+export const runtime = "nodejs";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-type Item = { productId: string; variantId?: string; name: string; variantLabel?: string; unitAmount: number; quantity: number };
-
-function enforceLeadTimes(items: Item[], pickupDateISO: string) {
-  const date = new Date(pickupDateISO);
-  if (Number.isNaN(date.getTime())) throw new Error("Invalid pickup/delivery date");
-
-  for (const it of items) {
-    const p = PRODUCTS.find(p => p.id === it.productId);
-    const v = p?.variants?.find(v => v.id === it.variantId);
-    const lead = v?.leadDays ?? 0;
-    const earliest = new Date();
-    earliest.setHours(0,0,0,0);
-    earliest.setDate(earliest.getDate() + lead);
-    if (date < earliest) throw new Error(`Selected date too soon for ${p?.name}${v ? ` – ${v.name}` : ""}`);
-  }
-}
-
 export async function POST(req: NextRequest) {
-  const { email, customerName, items, pickupDate, fulfillmentType, deliveryZip, note, tipAmount = 0 } = await req.json();
+  const body = await req.json();
+  const { email, customerName, pickupDate, note, items } = body; // <-- no fulfillmentType, no deliveryZip
 
-  if (!email || !customerName || !items?.length) return new NextResponse("Missing fields", { status: 400 });
-
-  enforceLeadTimes(items, pickupDate);
-  if (fulfillmentType === "delivery" && !isZipDeliverable(deliveryZip)) {
-    return new NextResponse("We only deliver to select ZIP codes.", { status: 400 });
+  // basic validations…
+  const chosen = new Date(pickupDate);
+  if (Number.isNaN(chosen.getTime())) {
+    return NextResponse.json({ error: "Please choose a valid pickup date." }, { status: 400 });
   }
 
-  const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map((it: Item) => ({
-    quantity: it.quantity,
-    price_data: {
-      currency: "usd",
-      product_data: { name: `${it.name}${it.variantLabel ? ` – ${it.variantLabel}` : ""}` },
-      unit_amount: it.unitAmount,
+  // Lead time: compute max leadDays from selected items
+  const maxLead = Math.max(
+    0,
+    ...items.map((it: any) => {
+      const p = PRODUCTS.find(p => p.id === it.productId);
+      const v = p?.variants?.find(v => v.id === it.variantId);
+      return v?.leadDays ?? p?.variants?.[0]?.leadDays ?? 0;
+    })
+  );
+  const earliest = new Date(); earliest.setDate(earliest.getDate() + maxLead);
+  if (chosen < startOfDay(earliest)) {
+    return NextResponse.json({ error: `Earliest available pickup is ${earliest.toLocaleDateString()}.` }, { status: 400 });
+  }
+
+  // Capacity
+  const existing = await prisma.order.count({
+    where: {
+      pickupDate: { gte: startOfDay(chosen), lte: endOfDay(chosen) },
+      status: { in: ["paid", "preparing", "ready"] },
     },
-  }));
-
-  if (fulfillmentType === "delivery") {
-    const fee = deliveryFeeCents(deliveryZip);
-    if (!fee) return new NextResponse("ZIP not deliverable.", { status: 400 });
-    line_items.push({
-      quantity: 1,
-      price_data: { currency: "usd", product_data: { name: "Local Delivery" }, unit_amount: fee },
-    });
-  }
-  if (tipAmount > 0) {
-    line_items.push({
-      quantity: 1,
-      price_data: { currency: "usd", product_data: { name: "Tip" }, unit_amount: tipAmount },
-    });
+  });
+  if (existing >= CAPACITY_PER_DAY) {
+    return NextResponse.json({ error: "We’re fully booked for that day. Please choose another date." }, { status: 400 });
   }
 
+  // Stripe line items from cart
+  const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map((it: any) => {
+    const product = PRODUCTS.find(p => p.id === it.productId)!;
+    const variant = product.variants?.find(v => v.id === it.variantId)!;
+    const price = variant?.price ?? product.basePrice ?? 0;
+
+    return {
+      quantity: it.quantity,
+      price_data: {
+        currency: "usd",
+        unit_amount: price,
+        product_data: {
+          name: `${product.name}${variant ? ` — ${variant.name}` : ""}`,
+        },
+      },
+    };
+  });
+
+  const baseUrl = process.env.PUBLIC_BASE_URL || "http://localhost:3000";
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
     payment_method_types: ["card"],
     customer_email: email,
     line_items,
-    success_url: `${process.env.PUBLIC_BASE_URL}/thank-you?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${process.env.PUBLIC_BASE_URL}/cart`,
-    metadata: { customerName, pickupDate, fulfillmentType, deliveryZip: deliveryZip || "", note: note || "" },
+    success_url: `${baseUrl}/thank-you?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${baseUrl}/cart`,
+    metadata: {
+      customerName,
+      pickupDate, // YYYY-MM-DD
+      note: note || "",
+      // fulfillmentType: "pickup" // (optional) you can include this if you wish
+    },
   });
 
-  return NextResponse.json({ checkoutUrl: session.url });
+  return NextResponse.json({ id: session.id, url: session.url });
 }
