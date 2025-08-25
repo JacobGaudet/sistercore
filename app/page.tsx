@@ -68,9 +68,9 @@ export default function Home() {
         <h2>How It Works</h2>
         <div className="features">
           <div className="feature card">
-            <div className="feature-icon">🧁</div>
+            <div className="feature-icon">🍪</div>
             <h3>Pick your treats</h3>
-            <p className="lead">Choose from our selection of homemade bakes, or pick one out a wrapped Mystery Book.</p>
+            <p className="lead">Choose from our selection of homemade bakes, or pick out a wrapped Mystery Book.</p>
           </div>
           <div className="feature card">
             <div className="feature-icon">📅</div>
@@ -85,18 +85,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* MYSTERY BOOK PROMO */}
-      <section className="promo card stack">
-        <div className="kicker">Giftable & Fun</div>
-        <h2>Mystery Book (with clues!)</h2>
-        <p className="lead">
-          Pick a style—Cozy, Thriller, Historical, Literary, or Romantic Suspense—
-          and we include spoiler-free clues like “It’s like…” comps.
-        </p>
-        <Link href="/product/mysterybook" className="btn btn-primary">Choose a Style</Link>
-      </section>
-
-      {/* PICKUP & DELIVERY INFO */}
+      {/* PICKUP INFO */}
       <section className="grid grid-2">
       <div className="card stack">
         <h2>Pickup Info</h2>

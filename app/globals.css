@@ -435,3 +435,28 @@ select option {
 /* Reduce only the top padding when you add .toptight */
 .container.toptight { padding-top: var(--space-2) !important; }
 .brand-hero { padding-top: 4px; } /* keep brand area tight */
+
+/* Obvious inline links (doesn't affect .btn buttons) */
+.link {
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.link:hover { text-decoration-thickness: 2px; }
+
+/* Simple modal */
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,.35);
+  z-index: 98;
+}
+.modal {
+  position: fixed; inset: 0; display: grid; place-items: center; z-index: 99;
+  padding: 16px;
+}
+.modal-card {
+  width: min(92vw, 520px);
+  background: #fff; border: 1px solid var(--border);
+  border-radius: var(--radius); padding: var(--space-4);
+  box-shadow: var(--shadow);
+}
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: var(--space-3); }

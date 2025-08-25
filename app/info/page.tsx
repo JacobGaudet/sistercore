@@ -1,3 +1,5 @@
+import ConfirmEmailLink from "@/app/components/ConfirmEmailLink";
+
 export const metadata = {
   title: "About & Policies — Sister Core ATX",
   description: "Pickup-only bakery in Austin, TX. Lead times, allergens, and order policies.",
@@ -13,10 +15,10 @@ export default function InfoPage() {
           wrapped with spoiler-free clues. Orders are <strong>pickup only</strong> for now.
         </p>
         <p className="lead">
-          Questions? Email <a href="mailto:orders@sistercoreatx.com">orders@sistercoreatx.com</a> or
+          Questions? Email <ConfirmEmailLink label="orders@sistercoreatx.com" variant="link" /> or
           say hi on Instagram:{" "}
-          <a href="https://instagram.com/sistercoreatx" target="_blank" rel="noopener noreferrer">
-            @sistercoreatx
+          <a href="https://instagram.com/sistercore.atx" target="_blank" rel="noopener noreferrer">
+            @sistercore.atx
           </a>
           .
         </p>
@@ -63,10 +65,10 @@ export default function InfoPage() {
       <section className="card stack">
         <h2>Contact</h2>
         <p className="lead">
-          Email: <a href="mailto:orders@sistercoreatx.com">orders@sistercoreatx.com</a><br />
+          Email: <ConfirmEmailLink label="orders@sistercoreatx.com" variant="link" /><br />
           Instagram:{" "}
-          <a href="https://instagram.com/sistercoreatx" target="_blank" rel="noopener noreferrer">
-            @sistercoreatx
+          <a href="https://instagram.com/sistercore.atx" target="_blank" rel="noopener noreferrer">
+            @sistercore.atx
           </a>
         </p>
       </section>
