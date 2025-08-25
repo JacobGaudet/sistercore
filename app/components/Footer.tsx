@@ -30,9 +30,9 @@ export default function Footer() {
         </nav>
 
         <div className="footer-contact">
-          <strong>Stay in touch</strong>
+          <strong>Contact Us</strong>
           <p style={{ marginTop: 8 }}>
-            Austin, TX •{" "}
+            {" "}
             <a href="mailto:orders@sistercoreatx.com">orders@sistercoreatx.com</a>
           </p>
           <div className="social" style={{ marginTop: 8 }}>

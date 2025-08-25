@@ -309,3 +309,40 @@ fieldset { border: 1px dashed var(--border); border-radius: 12px; padding: var(-
 /* Safety: never allow horizontal scroll on the whole page */
 html, body { max-width: 100%; overflow-x: hidden; }
 
+/* Cart: prevent horizontal overflow everywhere inside the layout */
+.cart-layout, .cart-layout * { min-width: 0; }
+html, body { max-width: 100%; overflow-x: hidden; }
+
+/* Make cart rows wrap on small screens */
+.row-wrap { flex-wrap: wrap; }
+.row-wrap .inline { margin-left: auto; }
+
+/* Allow the left cell (name/variant) to shrink/break */
+.shrinkable { min-width: 0; overflow-wrap: anywhere; }
+
+/* Two-column form that collapses to one column on narrow screens */
+.two-col {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) {
+  .two-col { grid-template-columns: 1fr 1fr; }
+}
+
+/* Cart layout grid: one column on mobile, two on desktop */
+.cart-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+}
+@media (min-width: 900px) {
+  .cart-layout { grid-template-columns: 1.2fr .8fr; }
+}
+
+/* Sticky aside only on desktop */
+.sticky-aside { position: static; }
+@media (min-width: 900px) {
+  .sticky-aside { position: sticky; top: 90px; height: fit-content; }
+}
+

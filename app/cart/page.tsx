@@ -45,8 +45,9 @@ export default function CartPage() {
           ) : (
             <div className="stack">
               {items.map((it, i) => (
-                <div key={i} className="row">
-                  <div style={{ minWidth: 0 }}>
+                <div key={i} className="row row-wrap">
+                  {/* Allow this cell to shrink on small screens */}
+                  <div className="shrinkable">
                     <strong>{it.name}</strong>
                     {it.variantLabel ? ` – ${it.variantLabel}` : ""} × {it.quantity}
                   </div>
@@ -82,7 +83,7 @@ export default function CartPage() {
             />
           </div>
 
-          <div className="grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)" }}>
+          <div className="two-col">
             <div className="field">
               <label className="label">Email</label>
               <input
