@@ -392,3 +392,32 @@ select, option { color: var(--text) !important; background: #fff; }
   background: #fff;
   border: 1px solid var(--border);
 }
+
+/* --- FORCE VARIANT TEXT TO BLACK --- */
+
+/* 1) Chips (radio-style) — keep label text black even when selected */
+.chips .chip,
+.chips .chip * {
+  color: var(--text) !important;
+}
+.chips .chip.active {
+  color: var(--text) !important;
+}
+/* Modern browsers: also catch the "checked" state even if no .active class */
+.chips .chip:has(input[type="radio"]:checked) {
+  color: var(--text) !important;
+}
+
+/* 2) Select dropdowns — option text must be black on all platforms */
+select,
+.field select,
+.card select {
+  color: var(--text) !important;
+  background-color: #fff !important;
+  -webkit-text-fill-color: var(--text); /* iOS Safari */
+}
+/* Some UAs style options separately */
+select option {
+  color: var(--text) !important;
+  background: #fff !important;
+}
