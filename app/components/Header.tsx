@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
 import { useCart } from "@/app/cart/CartContext";
 import { useEffect, useState } from "react";
 import MobileMenu from "./MobileMenu";
@@ -16,6 +15,7 @@ function BurgerIcon() {
 export default function Header() {
   const { items } = useCart();
   const count = items.reduce((n, i) => n + i.quantity, 0);
+
   const [bump, setBump] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -28,24 +28,18 @@ export default function Header() {
 
   return (
     <header className="site-header">
-      <nav className="nav container">
-        {/* Left: burger (mobile) */}
+      <nav className="nav container nav-compact">
+        {/* left: burger on mobile */}
         <button className="only-mobile btn btn-ghost" aria-label="Open menu" onClick={() => setOpen(true)}>
           <BurgerIcon />
         </button>
 
-        {/* Center: brand */}
-        <Link href="/" className="brand-link" aria-label="Sister Core ATX - Home">
-          <div className="brand-wrap">
-            <Image src="/logo.jpeg" alt="Sister Core ATX" width={32} height={32} priority/>
-            <span className="brand-text">Sister&nbsp;Core&nbsp;ATX</span>
-          </div>
-        </Link>
+        {/* middle: spacer (no brand text) */}
+        <div className="nav-spacer" />
 
-        {/* Right: actions */}
+        {/* right: actions */}
         <div className="nav-actions">
           <Link href="/menu" className="btn btn-ghost only-desktop">Menu</Link>
-          <Link href="/info" className="btn btn-ghost only-desktop">Info</Link>
           <Link href="/cart" className="btn btn-primary">
             Cart <span className={`badge ${bump ? "bump" : ""}`}>{count}</span>
           </Link>

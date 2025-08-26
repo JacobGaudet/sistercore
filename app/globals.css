@@ -58,18 +58,10 @@ body {
   gap: 10px;
   padding: var(--space-3) var(--space-4);
 }
-.brand-link {
-  justify-self: center;
-  min-width: 0;                 /* allow shrink in grid */
-}
+
 .brand-wrap { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
 .brand-wrap img { display: block; }
-.brand-text {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 62vw;              /* cap width so Cart always fits */
-}
+
 .nav-actions { display: inline-flex; align-items: center; gap: 8px; }
 .nav-actions .btn { flex-shrink: 0; }
 
@@ -498,3 +490,28 @@ select option {
   box-shadow: var(--shadow);
 }
 .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: var(--space-3); }
+
+/* --- Layout: sticky footer --- */
+html, body { height: 100%; }
+body { min-height: 100svh; display: flex; flex-direction: column; }
+.page { flex: 1 0 auto; padding-top: var(--space-5); } /* main content grows */
+.site-footer { flex: 0 0 auto; margin-top: var(--space-6); } /* stays at bottom */
+
+/* Header compact row (no brand text) */
+.nav.nav-compact {
+  display: flex; align-items: center; gap: 10px;
+  padding: var(--space-3) var(--space-4);
+}
+.nav-spacer { flex: 1; } /* pushes actions to the right */
+
+/* Logo banner (below header on all pages) */
+.logo-banner {
+  display: flex; justify-content: center; align-items: center;
+  padding: var(--space-2) 0 var(--space-2);
+}
+.logo-banner img { width: 180px; height: auto; border-radius: 16px; box-shadow: var(--shadow); }
+@media (min-width: 720px) { .logo-banner img { width: 220px; } }
+
+/* Keep header/footer pink, text black, boxes white (from earlier theme) */
+.site-header { background: var(--accent); border-bottom: 1px solid var(--accent-strong); }
+.site-footer { background: var(--accent); border-top: 1px solid var(--accent-strong); }
