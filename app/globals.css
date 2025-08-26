@@ -507,11 +507,17 @@ body { min-height: 100svh; display: flex; flex-direction: column; }
 /* Logo banner (below header on all pages) */
 .logo-banner {
   display: flex; justify-content: center; align-items: center;
-  padding: var(--space-2) 0 var(--space-2);
+  padding-block: var(--space-4);   /* equal top & bottom */
 }
+.logo-link { display: inline-flex; }
 .logo-banner img { width: 180px; height: auto; border-radius: 16px; box-shadow: var(--shadow); }
 @media (min-width: 720px) { .logo-banner img { width: 220px; } }
 
 /* Keep header/footer pink, text black, boxes white (from earlier theme) */
 .site-header { background: var(--accent); border-bottom: 1px solid var(--accent-strong); }
 .site-footer { background: var(--accent); border-top: 1px solid var(--accent-strong); }
+
+/* Remove extra top padding from the page content so spacing is even */
+.page { padding-top: 0; }  /* we’ll let the logo provide that space */
+/* Also remove the top padding from the first content container only */
+.page > .container:first-child { padding-top: 0; }

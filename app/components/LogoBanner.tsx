@@ -1,15 +1,18 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function LogoBanner() {
   return (
     <div className="logo-banner">
-      <Image
-        src="/logo.jpeg"
-        alt="Sister Core ATX"
-        width={220}
-        height={220}
-        priority
-      />
+      <Link href="/" aria-label="Go to home" className="logo-link">
+        <Image
+          src="/logo.jpeg"
+          alt="Sister Core ATX"
+          width={220}
+          height={220}
+          priority
+        />
+      </Link>
     </div>
   );
 }
