@@ -9,10 +9,11 @@ export default function InfoPage() {
   return (
     <main className="container stack">
       <section className="card stack">
-        <h1>About Sister Core ATX</h1>
+        <h1>About Sister Core</h1>
         <p className="lead">
-          We’re a small, Austin-based bakery focused on pastel treats and giftable “Mystery Books”
-          wrapped with spoiler-free clues. Orders are <strong>pickup only</strong> for now.
+          Our business is rooted in what we love to do as sisters - and who we are at our core.
+           As healthcare workers, we're passionate about a healthier, more holistic, and cozy approach to life.
+            Some of our favorite ways to live this out are baking from scratch, reading real (paper!) books, and crating joy in everything we do.
         </p>
         <p className="lead">
           Questions? Email <ConfirmEmailLink label="orders@sistercoreatx.com" variant="link" /> or
@@ -20,7 +21,6 @@ export default function InfoPage() {
           <a href="https://instagram.com/sistercore.atx" target="_blank" rel="noopener noreferrer">
             @sistercore.atx
           </a>
-          .
         </p>
       </section>
 

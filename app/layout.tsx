@@ -9,8 +9,8 @@ import { Inter } from "next/font/google";
 const sans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata = {
-  title: "Sister Core ATX",
-  description: "Pastel treats, mystery books, and cozy vibes in Austin.",
+  title: "Sister Core",
+  description: "Fresh baked treats, mystery books, and cozy vibes.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

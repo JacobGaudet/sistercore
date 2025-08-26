@@ -1,43 +1,62 @@
+// app/menu/page.tsx
 import Link from "next/link";
 import { PRODUCTS } from "@/lib/products";
+import ConfirmEmailLink from "@/app/components/ConfirmEmailLink";
+
+export const metadata = {
+  title: "Menu — Sister Core",
+  description: "Pickup-only menu: cookies, banana bread, muffins, cinnamon rolls, and brownies.",
+};
 
 export default function MenuPage() {
+  const items = PRODUCTS.filter((p) => p.active);
+
   const fmt = (c: number) => `$${(c / 100).toFixed(2)}`;
+  const priceRange = (p: (typeof PRODUCTS)[number]) => {
+    const prices = p.variants?.map((v) => v.price) ?? (p.basePrice ? [p.basePrice] : []);
+    if (!prices.length) return null;
+    const min = Math.min(...prices);
+    const max = Math.max(...prices);
+    return min === max ? fmt(min) : `${fmt(min)}–${fmt(max)}`;
+  };
 
   return (
     <main className="container stack">
       <h1>Menu</h1>
-      <p className="lead">Choose your treats, then customize & add to cart.</p>
 
       <div className="grid grid-2">
-        {PRODUCTS.filter((p) => p.active).map((p) => {
-          const prices = p.variants?.map((v) => v.price) ?? (p.basePrice ? [p.basePrice] : []);
-          const hasPrices = prices.length > 0;
-          const min = hasPrices ? Math.min(...prices) : 0;
-          const max = hasPrices ? Math.max(...prices) : 0;
-
-          return (
-            <div key={p.id} className="card stack">
-              <div>
-                <h2>{p.name}</h2>
-                {p.description && <p className="lead">{p.description}</p>}
-              </div>
-
-              {hasPrices && (
-                <div className="lead">
-                  {min === max ? <>Price: <strong>{fmt(min)}</strong></> : <>From <strong>{fmt(min)}</strong> to <strong>{fmt(max)}</strong></>}
-                </div>
-              )}
-
-              <div>
-                <Link href={`/product/${p.slug}`} className="btn btn-primary">
-                  Customize & Add
-                </Link>
-              </div>
+        {items.map((p) => (
+          <article key={p.id} className="card stack">
+            <div>
+              <h3>{p.name}</h3>
+              {p.description && <p className="lead">{p.description}</p>}
             </div>
-          );
-        })}
+            <div className="inline" style={{ justifyContent: "space-between" }}>
+              <span className="lead">
+                {priceRange(p) ? <>From <strong>{priceRange(p)}</strong></> : null}
+              </span>
+              <Link href={`/product/${p.slug}`} className="btn btn-primary">
+                Select
+              </Link>
+            </div>
+          </article>
+        ))}
       </div>
+
+      <section className="card stack">
+        <h2>Need something custom?</h2>
+        <p className="lead">
+          Have a special request or a larger order? We’re happy to help.
+        </p>
+        <ConfirmEmailLink
+          label="Inquire for custom order"
+          variant="button"
+          subject="Custom order inquiry — Sister Core ATX"
+          body={
+            "Hi Sister Core,\n\nI’m interested in a custom order:\n• Item(s):\n• Quantity:\n• Desired pickup date:\n\nThanks!"
+          }
+        />
+      </section>
     </main>
   );
 }

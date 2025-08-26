@@ -26,8 +26,7 @@ export default function Home() {
         </p>
         <div className="inline">
           <Link href="/menu" className="btn btn-primary">Start an Order</Link>
-          <Link href="/info" className="btn">About & Policies</Link>
-          <a href="https://instagram.com/sistercoreatx" target="_blank" rel="noopener noreferrer" className="btn btn-ghost">Instagram</a>
+          <a href="https://instagram.com/sistercore.atx" target="_blank" rel="noopener noreferrer" className="btn btn-ghost">Instagram</a>
         </div>
       </section>
 
