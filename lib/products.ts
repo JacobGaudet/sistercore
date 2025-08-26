@@ -21,7 +21,7 @@ export const PRODUCTS: Product[] = [
     name: "Chocolate Chip Cookies",
     slug: "choc-chip-cookies",
     active: true,
-    description: "Buttery, chewy cookies with a crisp edge.",
+    description: "Soft and chewy cookie filled with chocolate chips and finished with a sprinkle of sea salt.",
     variants: [
       { id: "4",  name: "4-Pack",      price: 800,  leadDays: 1 },  // 4/$8
       { id: "12", name: "Dozen (12)",  price: 2000, leadDays: 2 },  // 12/$20
@@ -34,7 +34,7 @@ export const PRODUCTS: Product[] = [
     name: "Banana Bread",
     slug: "banana-bread",
     active: true,
-    description: "Moist, classic loaf.",
+    description: "Delicious banana loaf with a brown sugar cinnamon crumble on top.",
     variants: [
       { id: "mini",     name: "Mini Loaf",     price: 600,  leadDays: 1 }, // $6
       { id: "standard", name: "Standard Loaf", price: 1200, leadDays: 2 }, // $12
@@ -47,6 +47,7 @@ export const PRODUCTS: Product[] = [
     name: "Lemon Poppyseed Muffin",
     slug: "lemon-poppyseed-muffin",
     active: true,
+    description: "Zingy lemon muffin with poppyseeds throughout, topped with a tasty glaze.",
     variants: [
       { id: "single", name: "Single",  price: 400,  leadDays: 1 }, // 1/$4
       { id: "4",      name: "4-Pack",  price: 1600, leadDays: 1 }, // 4/$16
@@ -59,6 +60,7 @@ export const PRODUCTS: Product[] = [
     name: "Sourdough Cinnamon Rolls",
     slug: "sourdough-cinnamon-rolls",
     active: true,
+    description: "Soft, pillowy buns swirled with cinnamon sugar and topped with cream cheese frosting.",
     variants: [
       { id: "single", name: "Single",  price: 600,  leadDays: 2 }, // 1/$6
       { id: "4",      name: "4-Pack",  price: 2000, leadDays: 2 }, // 4/$20
@@ -71,7 +73,7 @@ export const PRODUCTS: Product[] = [
     name: "Double Chocolate Brownie",
     slug: "double-chocolate-brownie",
     active: true,
-    description: "Fudgy brownie with extra cocoa + chips.",
+    description: "Ooey gooey chocolatey goodness mixed with chocolate chips.",
     basePrice: 400, // $4 each; quantity handled on product page
   },
   {
