@@ -179,6 +179,7 @@ fieldset { border: 1px dashed var(--border); border-radius: 12px; padding: var(-
 .footer-nav li + li { margin-top: 8px; }
 .footer-nav a { color: var(--text); }
 .footer-nav a:hover { text-decoration: underline; }
+.footer-nav button.link:hover { text-decoration: underline; }
 .footer-contact p { margin: 6px 0; }
 .footer-bottom {
   display: flex; justify-content: space-between; align-items: center;
@@ -466,12 +467,6 @@ select option {
 .container.toptight { padding-top: var(--space-2) !important; }
 .brand-hero { padding-top: 4px; } /* keep brand area tight */
 
-/* Obvious inline links (doesn't affect .btn buttons) */
-.link {
-  font-weight: 700;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
 .link:hover { text-decoration-thickness: 2px; }
 
 /* Simple modal */
@@ -549,3 +544,59 @@ body { min-height: 100svh; display: flex; flex-direction: column; }
 
 /* Optional: disable touch scrolling on the backdrop itself */
 .modal-backdrop { touch-action: none; }
+
+/* Buttons that should look like plain text links (used by ConfirmEmailLink variant="link") */
+button.link {
+  appearance: none;            /* remove native button styling */
+  -webkit-appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  color: var(--text);          /* match other links */
+  font: inherit;
+  cursor: pointer;
+  line-height: inherit;
+}
+
+button.link:hover { text-decoration-thickness: 2px; }
+button.link:hover { text-decoration: underline; }
+
+/* Accessible focus state on the pink footer */
+button.link:focus-visible,
+a.link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--ring);
+  border-radius: 6px; /* soft corners for the focus halo */
+}
+
+/* Center the footer links block */
+.footer-grid.footer-center {
+  display: flex;                  /* override previous grid */
+  justify-content: center;
+}
+
+/* Keep the nav stack centered and tidy */
+.footer-grid.footer-center .footer-nav {
+  text-align: center;
+  max-width: 520px;               /* optional: keep it from stretching too wide */
+  margin-inline: auto;
+}
+
+/* Center the list items and spacing */
+.footer-grid.footer-center .footer-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-2) 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;            /* center each li */
+}
+
+/* Center the social row */
+.footer-grid.footer-center .social {
+  display: flex;
+  justify-content: center;
+}
+

@@ -15,7 +15,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
   return (
     <footer className="site-footer">
-      <div className="container footer-grid">
+      <div className="container footer-grid footer-center">
 
         <nav className="footer-nav">
           <strong>Explore</strong>
@@ -24,13 +24,6 @@ export default function Footer() {
             <li><Link href="/info">About</Link></li>
             <li><ConfirmEmailLink label="Contact" variant="link" /></li>
           </ul>
-        </nav>
-
-        <div className="footer-contact">
-          <strong></strong>
-          <p style={{ marginTop: 8 }}>
-            <ConfirmEmailLink label="orders@sistercoreatx.com" variant="link" />
-          </p>
           <div className="social" style={{ marginTop: 8 }}>
             <a
               className="btn btn-ghost"
@@ -43,7 +36,7 @@ export default function Footer() {
               <InstagramIcon style={{ color: "var(--text)" }} />
             </a>
           </div>
-        </div>
+        </nav>
       </div>
 
       <div className="footer-bottom container" style={{ justifyContent: "center", gap: 12 }}>
