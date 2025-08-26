@@ -491,6 +491,14 @@ select option {
 }
 .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: var(--space-3); }
 
+/* Modal actions that wrap on small screens */
+.modal-actions.wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
 /* --- Layout: sticky footer --- */
 html, body { height: 100%; }
 body { min-height: 100svh; display: flex; flex-direction: column; }
@@ -521,3 +529,23 @@ body { min-height: 100svh; display: flex; flex-direction: column; }
 .page { padding-top: 0; }  /* we’ll let the logo provide that space */
 /* Also remove the top padding from the first content container only */
 .page > .container:first-child { padding-top: 0; }
+
+/* Prevent background scroll bounce and repaint flicker */
+.modal-backdrop,
+.modal {
+  position: fixed; inset: 0;
+  will-change: opacity, transform;
+  transform: translateZ(0);           /* promote to its own layer */
+  overscroll-behavior: contain;       /* block bounce on iOS */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Make content scroll *inside* the card if it’s tall, not the page */
+.modal-card {
+  max-height: min(92vh, 560px);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Optional: disable touch scrolling on the backdrop itself */
+.modal-backdrop { touch-action: none; }
