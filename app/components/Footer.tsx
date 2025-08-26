@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ConfirmEmailLink from "./ConfirmEmailLink";
 
 function InstagramIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -15,46 +16,38 @@ export default function Footer() {
   return (
     <footer className="site-footer">
       <div className="container footer-grid">
-        <div className="footer-brand">
-          <div className="brand">Sister&nbsp;Core&nbsp;ATX</div>
-          <p className="lead" style={{ marginTop: 6 }}>
-            Pastel treats & wrapped Mystery Books — pickup only in Austin, TX.
-          </p>
-        </div>
 
         <nav className="footer-nav">
           <strong>Explore</strong>
           <ul>
             <li><Link href="/menu">Menu</Link></li>
-            <li><Link href="/info">About & Policies</Link></li>
-            <li><a href="mailto:orders@sistercoreatx.com">Contact</a></li>
+            <li><Link href="/info">About</Link></li>
+            <li><ConfirmEmailLink label="Contact" variant="link" /></li>
           </ul>
         </nav>
 
         <div className="footer-contact">
-          <strong>Stay in touch</strong>
+          <strong></strong>
           <p style={{ marginTop: 8 }}>
-            {" "}
-            <a href="mailto:orders@sistercoreatx.com">orders@sistercoreatx.com</a>
+            <ConfirmEmailLink label="orders@sistercoreatx.com" variant="link" />
           </p>
           <div className="social" style={{ marginTop: 8 }}>
             <a
               className="btn btn-ghost"
               aria-label="Instagram"
-              href="https://instagram.com/sistercoreatx"
+              href="https://instagram.com/sistercore.atx"
               target="_blank"
               rel="noopener noreferrer"
               style={{ gap: 8 }}
             >
               <InstagramIcon style={{ color: "var(--text)" }} />
-              <span>@sistercoreatx</span>
             </a>
           </div>
         </div>
       </div>
 
       <div className="footer-bottom container" style={{ justifyContent: "center", gap: 12 }}>
-        <span>© {year} Sister Core ATX</span>
+        <span>© {year} Sister Core</span>
       </div>
     </footer>
   );

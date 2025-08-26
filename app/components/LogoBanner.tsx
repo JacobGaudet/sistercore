@@ -7,7 +7,7 @@ export default function LogoBanner() {
       <Link href="/" aria-label="Go to home" className="logo-link">
         <Image
           src="/logo.jpeg"
-          alt="Sister Core ATX"
+          alt="Sister Core"
           width={220}
           height={220}
           priority
