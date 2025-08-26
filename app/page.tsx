@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { PRODUCTS } from "@/lib/products";
 
 export default function Home() {

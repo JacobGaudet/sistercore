@@ -12,7 +12,7 @@ export default function InfoPage() {
         <h1>About Sister Core</h1>
         <p className="lead">
           Our business is rooted in what we love to do as sisters - and who we are at our core.
-           As healthcare workers, we're passionate about a healthier, more holistic, and cozy approach to life.
+           As healthcare workers, we’re passionate about a healthier, more holistic, and cozy approach to life.
             Some of our favorite ways to live this out are baking from scratch, reading real (paper!) books, and crating joy in everything we do.
         </p>
         <p className="lead">
