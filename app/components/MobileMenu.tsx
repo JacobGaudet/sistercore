@@ -57,14 +57,6 @@ export default function MobileMenu({
               </Link>
             </li>
             <li>
-              {/* Contact uses your confirmation modal but styled like other links */}
-              <ConfirmEmailLink
-                label="Contact"
-                variant="link"
-                className="drawer-link"
-              />
-            </li>
-            <li>
               <a
                 href="https://instagram.com/sistercore.atx"
                 target="_blank"

@@ -1,5 +1,6 @@
 // lib/email.ts
 import { Resend } from "resend";
+import { render } from "@react-email/render";          // ⬅️ new
 import OrderConfirmationEmail from "@/app/emails/OrderConfirmationEmail";
 import { buildPickupIcs } from "@/lib/ics";
 
@@ -45,7 +46,6 @@ export async function sendOrderEmails({
   tip: number; // cents
   total: number; // cents
 }) {
-  // If email isn't configured, don't crash the app/webhook—just log.
   if (!emailEnabled || !resend) {
     console.log("[email] disabled; would send:", {
       toCustomer: customerEmail,
@@ -59,7 +59,6 @@ export async function sendOrderEmails({
     return;
   }
 
-  // Normalize items (exclude fee/tip lines from the item list)
   const normalized = lineItems
     .filter((li) => {
       const d = (li.description || "").toLowerCase().trim();
@@ -71,7 +70,6 @@ export async function sendOrderEmails({
       total: li.amount_total || 0,
     }));
 
-  // Calendar attachment (nice customer experience)
   const ics = buildPickupIcs({
     summary: fulfillmentType === "pickup" ? "Sister Core Pickup" : "Sister Core Delivery",
     description: `Order for ${customerName}${note ? ` — ${note}` : ""}`,
@@ -79,43 +77,75 @@ export async function sendOrderEmails({
     location: fulfillmentType === "pickup" ? "Sister Core ATX" : `Delivery ${deliveryZip ?? ""}`,
   });
 
-  // Send customer confirmation
-  try {
-    await resend.emails.send({
-      from: FROM!,
-      to: customerEmail,
-      replyTo: OWNER, // customer replies go to you
-      subject: `Your order is confirmed — ${new Date(pickupDateISO).toLocaleDateString()}`,
-      react: OrderConfirmationEmail({
-        customerName,
-        pickupDateISO,
-        fulfillmentType,
-        deliveryZip,
-        note,
-        lines: normalized,
-        subtotal,
-        tip,
-        total,
-      }),
-      attachments: [
-        {
-          filename: "pickup.ics",
-          content: Buffer.from(ics).toString("base64"),
-          contentType: "text/calendar",
-        },
-      ],
-    });
-  } catch (err) {
-    console.error("[email] customer send failed:", err);
-    // continue so seller alert still goes out
+  // ——— Customer confirmation ———
+  const customerSubject = `Your order is confirmed — ${new Date(pickupDateISO).toLocaleDateString()}`;
+
+  // ——— Customer confirmation ———
+try {
+  const html = await render(
+    <OrderConfirmationEmail
+      customerName={customerName}
+      pickupDateISO={pickupDateISO}
+      fulfillmentType={fulfillmentType}
+      deliveryZip={deliveryZip}
+      note={note}
+      lines={normalized}
+      subtotal={subtotal}
+      tip={tip}
+      total={total}
+    />
+  );
+
+  await resend.emails.send({
+    from: FROM!,
+    to: customerEmail,
+    replyTo: OWNER,
+    subject: `Your order is confirmed — ${new Date(pickupDateISO).toLocaleDateString()}`,
+    html,
+    attachments: [
+      { filename: "pickup.ics", content: Buffer.from(ics).toString("base64") },
+    ],
+  });
+} catch (err) {
+    // Text fallback so customers still get a confirmation
+    const text = [
+      `Hi ${customerName || "there"},`,
+      ``,
+      `Thanks for your order!`,
+      `Pickup date: ${pickupDateISO}`,
+      note ? `Note: ${note}` : "",
+      ``,
+      `Items:`,
+      ...normalized.map((l) => `• ${l.name} × ${l.quantity}`),
+      ``,
+      `Total: $${(total / 100).toFixed(2)}`,
+      `— Sister Core ATX`,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    try {
+      await resend.emails.send({
+        from: FROM!,
+        to: customerEmail,
+        replyTo: OWNER,
+        subject: customerSubject,
+        text,
+        attachments: [
+          { filename: "pickup.ics", content: Buffer.from(ics).toString("base64") },
+        ],
+      });
+    } catch (err2) {
+      console.error("[email] customer text fallback failed:", err2);
+    }
   }
 
-  // Send seller alert
+  // ——— Seller alert ———
   try {
     await resend.emails.send({
       from: FROM!,
-      to: OWNER!, // your inbox (Gmail OK)
-      replyTo: customerEmail, // reply lands with the customer
+      to: OWNER!, // your inbox
+      replyTo: customerEmail,
       subject: `🧁 New ${fulfillmentType} order — ${customerName} (${new Date(
         pickupDateISO
       ).toLocaleDateString()})`,
@@ -143,5 +173,4 @@ export async function sendOrderEmails({
   }
 }
 
-// (optional) export flag if you want to conditionally show UI based on email availability
 export const EMAIL_CONFIGURED = emailEnabled;

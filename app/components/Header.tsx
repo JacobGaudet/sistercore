@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useCart } from "@/app/cart/CartContext";
 import { useEffect, useState } from "react";
 import MobileMenu from "./MobileMenu";
+import DesktopNav from "./DesktopNav";
 
 function BurgerIcon() {
   return (
@@ -39,7 +40,7 @@ export default function Header() {
 
         {/* right: actions */}
         <div className="nav-actions">
-          <Link href="/menu" className="btn btn-ghost only-desktop">Menu</Link>
+          <DesktopNav />                      {/* ⬅️ new dropdown for desktop */}
           <Link href="/cart" className="btn btn-primary">
             Cart <span className={`badge ${bump ? "bump" : ""}`}>{count}</span>
           </Link>

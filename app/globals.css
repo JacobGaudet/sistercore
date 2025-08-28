@@ -600,3 +600,40 @@ a.link:focus-visible {
   justify-content: center;
 }
 
+/* Desktop dropdown */
+.dropdown { position: relative; }
+
+/* Place menu right under the trigger; add a small visual offset via margin */
+.dropdown-menu {
+  position: absolute; right: 0; top: 100%;
+  margin-top: 8px;                     /* the visual gap */
+  background: #fff; color: var(--text);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 6px;
+  min-width: 220px;
+  opacity: 0; transform: translateY(-4px); pointer-events: none;
+  transition: opacity .12s ease, transform .12s ease;
+  z-index: 70;
+}
+
+/* Invisible bridge fills the margin gap so hover doesn't break */
+.dropdown-menu::before {
+  content: "";
+  position: absolute; left: 0; right: 0; top: -8px; height: 8px;
+  /* transparent bridge; keeps mouse within "menu" while crossing the gap */
+}
+
+.dropdown-menu.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+.menu-item {
+  display: block; padding: 10px 12px; border-radius: 10px;
+  text-decoration: none; color: var(--text); font-weight: 600;
+}
+.menu-item:hover, .menu-item:focus-visible {
+  background: #fafafa;
+  outline: none;
+  box-shadow: 0 0 0 4px var(--ring);
+}
+
+
