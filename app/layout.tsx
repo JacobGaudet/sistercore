@@ -11,6 +11,9 @@ const sans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 export const metadata = {
   title: "Sister Core",
   description: "Fresh baked treats, mystery books, and cozy vibes.",
+  icons: {
+    icon: "/icon.png",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
