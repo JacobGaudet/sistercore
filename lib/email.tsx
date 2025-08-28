@@ -100,7 +100,7 @@ try {
     from: FROM!,
     to: customerEmail,
     replyTo: OWNER,
-    subject: `Your order is confirmed — ${new Date(pickupDateISO).toLocaleDateString()}`,
+    subject: `📅✅ Your order is confirmed — ${new Date(pickupDateISO).toLocaleDateString()}`,
     html,
     attachments: [
       { filename: "pickup.ics", content: Buffer.from(ics).toString("base64") },
@@ -146,7 +146,7 @@ try {
       from: FROM!,
       to: OWNER!, // your inbox
       replyTo: customerEmail,
-      subject: `🧁 New ${fulfillmentType} order — ${customerName} (${new Date(
+      subject: `📩 New ${fulfillmentType} order — ${customerName} (${new Date(
         pickupDateISO
       ).toLocaleDateString()})`,
       text: [
