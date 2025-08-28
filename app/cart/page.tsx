@@ -1,6 +1,7 @@
 "use client";
 import { useCart } from "./CartContext";
 import { useState } from "react";
+import MoneyInput from "@/app/components/MoneyInput";
 
 export default function CartPage() {
   const { items, remove, clear } = useCart();
@@ -9,8 +10,8 @@ export default function CartPage() {
   const [customerName, setCustomerName] = useState("");
   const [pickupDate, setPickupDate] = useState(""); // YYYY-MM-DD
   const [note, setNote] = useState("");
-  const [tipAmount, setTipAmount] = useState(0); // cents
   const [loading, setLoading] = useState(false);
+  const [tipCents, setTipCents] = useState(0);
 
   const subtotal = items.reduce((s, i) => s + i.unitAmount * i.quantity, 0);
 
@@ -20,7 +21,10 @@ export default function CartPage() {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, customerName, items, pickupDate, note, tipAmount }),
+        body: JSON.stringify({
+          email, customerName, items, pickupDate, note,
+          tipAmount: tipCents,
+        }),
       });
       if (!res.ok) throw new Error(await res.text());
       const { checkoutUrl } = await res.json();
@@ -117,14 +121,24 @@ export default function CartPage() {
           </div>
 
           <div className="field">
-            <label className="label">Tip (optional, cents)</label>
-            <input
-              className="input"
-              type="number"
-              min={0}
-              value={tipAmount}
-              onChange={(e) => setTipAmount(Math.max(0, +e.target.value || 0))}
-            />
+            <label className="label">Tip (optional)</label>
+            <div className="inline" style={{ gap: 10, alignItems: "center" }}>
+              <MoneyInput
+                valueCents={tipCents}
+                onChange={setTipCents}
+                ariaLabel="Tip amount"
+              />
+              {tipCents > 0 && (
+                <button
+                  type="button"
+                  className="btn btn-sm"
+                  onClick={() => setTipCents(0)}
+                  title="Remove tip"
+                >
+                  Remove
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </section>
