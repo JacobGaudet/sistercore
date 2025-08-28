@@ -12,7 +12,7 @@ export const metadata = {
   title: "Sister Core",
   description: "Fresh baked treats, mystery books, and cozy vibes.",
   icons: {
-    icon: "/icon.png",
+    icon: "/logo.jpeg",
   },
 };
 
