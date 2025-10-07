@@ -34,6 +34,7 @@ export function middleware(req: NextRequest) {
   }
 
   // Otherwise show a friendly maintenance page
+  // ...above code unchanged...
   const html = `<!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"/><meta name="robots" content="noindex"/>
@@ -44,13 +45,17 @@ export function middleware(req: NextRequest) {
 html,body{height:100%}body{margin:0;display:grid;place-items:center;background:#fff;color:var(--text);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
 .card{border:1px solid var(--border);border-radius:16px;padding:24px 28px;text-align:center;max-width:560px;box-shadow:0 10px 30px rgba(0,0,0,.06)}
 h1{margin:0 0 8px;font-size:22px}p{margin:6px 0}.pill{display:inline-block;padding:6px 10px;border-radius:999px;background:var(--pink);font-weight:700;margin-bottom:8px}
-a{color:inherit;text-decoration:underline}
+a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+.small{color:#6b6b6b;font-size:14px}
 </style></head><body>
 <div class="card">
   <div class="pill">Sister Core ATX</div>
   <h1>We’re baking something new 🧁</h1>
-  <p>Online ordering is temporarily offline.</p>
+  <p>Online ordering is temporarily offline while we prep the kitchen.</p>
   <p>Questions? <a href="mailto:orders@sistercoreatx.com">orders@sistercoreatx.com</a></p>
+  <p class="small">
+    DM us on Instagram for direct orders: <a href="https://instagram.com/sistercore.atx" target="_blank" rel="noopener noreferrer">@sistercore.atx</a>
+  </p>
 </div></body></html>`;
   return new NextResponse(html, { status: 503, headers: { "Content-Type": "text/html" } });
 }
